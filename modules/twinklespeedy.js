@@ -21,12 +21,12 @@ Twinkle.speedy = function twinklespeedy() {
 	}
 
 	if ( userIsInGroup( 'sysop' ) ) {
-		$(twAddPortletLink("#", "CSD", "tw-csd", "Delete page according to WP:CSD", "")).click(Twinkle.speedy.callback);
+		$(twAddPortletLink("#", "CSD", "tw-csd", "Borrando página de acuerdo a WP:PB", "")).click(Twinkle.speedy.callback);
 	} else if (twinkleUserAuthorized) {
-		$(twAddPortletLink("#", "CSD", "tw-csd", "Request speedy deletion according to WP:CSD", "")).click(Twinkle.speedy.callback);
+		$(twAddPortletLink("#", "CSD", "tw-csd", "Solicitando borrado rápido de acuerdo a WP:PB", "")).click(Twinkle.speedy.callback);
 	} else {
-		$(twAddPortletLink("#", 'CSD', 'tw-csd', 'Request speedy deletion according to WP:CSD', '')).click(function() {
-			alert("Your account is too new to use Twinkle.");
+		$(twAddPortletLink("#", 'CSD', 'tw-csd', 'Solicitando borrado rápido de acuerdo a WP:PB', '')).click(function() {
+			alert("Tu cuenta es muy nueva para usar Twinkle.");
 		});
 	}
 };
@@ -49,9 +49,9 @@ Twinkle.speedy.initDialog = function twinklespeedyInitDialog(callbackfunc, first
 	{
 		Twinkle.speedy.dialog = new SimpleWindow( Twinkle.getPref('speedyWindowWidth'), Twinkle.getPref('speedyWindowHeight') );
 		dialog = Twinkle.speedy.dialog;
-		dialog.setTitle( "Choose criteria for speedy deletion" );
+		dialog.setTitle( "Escoge el motivo del borrado rápido" );
 		dialog.setScriptName( "Twinkle" );
-		dialog.addFooterLink( "Speedy deletion policy", "WP:CSD" );
+		dialog.addFooterLink( "Política de Borrado", "WP:BR" );
 		dialog.addFooterLink( "Twinkle help", "WP:TW/DOC#speedy" );
 	}
 
@@ -61,10 +61,10 @@ Twinkle.speedy.initDialog = function twinklespeedyInitDialog(callbackfunc, first
 				type: 'checkbox',
 				list: [
 					{
-						label: 'Tag page only, don\'t delete',
-						value: 'tag_only',
-						name: 'tag_only',
-						tooltip: 'If you just want to tag the page, instead of deleting it now',
+						label: 'Solo marcar la página, sin borrar',
+						value: 'Solo_marcar',
+						name: 'Solo_marcar',
+						tooltip: 'Si solo quieres marcar la página, en lugar de borrarlo ahora',
 						checked : Twinkle.getPref('deleteSysopDefaultToTag'),
 						event: function( event ) {
 							// enable/disable notify checkbox
@@ -85,16 +85,16 @@ Twinkle.speedy.initDialog = function twinklespeedyInitDialog(callbackfunc, first
 					}
 				]
 			} );
-		form.append( { type: 'header', label: 'Delete-related options' } );
-		if (mw.config.get('wgNamespaceNumber') % 2 === 0 && (mw.config.get('wgNamespaceNumber') !== 2 || (/\//).test(mw.config.get('wgTitle')))) {  // hide option for user pages, to avoid accidentally deleting user talk page
+		form.append( { type: 'header', label: 'Borrar opciones relacionadas' } );
+		if (mw.config.get('wgNamespaceNumber') % 2 === 0 && (mw.config.get('wgNamespaceNumber') !== 2 || (/\//).test(mw.config.get('wgTitle')))) {  // ocultar las opciones para páginas de usuario, para evitar el borrado accidental de página de discusión de usuario
 			form.append( {
 				type: 'checkbox',
 				list: [
 					{
-						label: 'Also delete talk page',
-						value: 'talkpage',
-						name: 'talkpage',
-						tooltip: "This option deletes the page's talk page in addition. If you choose the F8 (moved to Commons) criterion, this option is ignored and the talk page is *not* deleted.",
+						label: 'También eliminar la página de discusión',
+						value: 'página de discusión',
+						name: 'página de discusión',
+						tooltip: "Esta opción borra ademas la página de usuario. If you choose the F8 (moved to Commons) criterion, this option is ignored and the talk page is *not* deleted.",
 						checked: Twinkle.getPref('deleteTalkPageOnDelete'),
 						disabled: Twinkle.getPref('deleteSysopDefaultToTag'),
 						event: function( event ) {
@@ -108,10 +108,10 @@ Twinkle.speedy.initDialog = function twinklespeedyInitDialog(callbackfunc, first
 				type: 'checkbox',
 				list: [
 					{
-						label: 'Also delete all redirects',
-						value: 'redirects',
-						name: 'redirects',
-						tooltip: "This option deletes all incoming redirects in addition. Avoid this option for procedural (e.g. move/merge) deletions.",
+						label: 'También borrar todas las redirecciones',
+						value: 'redirecciones',
+						name: 'redirecciones',
+						tooltip: "Esta opción borra todas también las redirecciones. Evite esta opción para los procesos de borrado (e.g. mover/fusionar).",
 						checked: true,
 						disabled: Twinkle.getPref('deleteSysopDefaultToTag'),
 						event: function( event ) {
@@ -130,10 +130,10 @@ Twinkle.speedy.initDialog = function twinklespeedyInitDialog(callbackfunc, first
 				type: 'checkbox',
 				list: [
 					{
-						label: 'Notify page creator if possible',
-						value: 'notify',
-						name: 'notify',
-						tooltip: "A notification template will be placed on the talk page of the creator, IF you have a notification enabled in your Twinkle preferences " +
+						label: 'Notificar al autor si es posible',
+						value: 'notificar',
+						name: 'notificar',
+						tooltip: "Una plantilla de notificación será colocada en la página de discusión del auotor, si tiene habilitada la notificación en sus preferencias de Twinke. " +
 							"for the criterion you choose AND this box is checked. The creator may be welcomed as well.",
 						checked: !userIsInGroup( 'sysop' ) || Twinkle.getPref('deleteSysopDefaultToTag'),
 						disabled: userIsInGroup( 'sysop' ) && !Twinkle.getPref('deleteSysopDefaultToTag'),
